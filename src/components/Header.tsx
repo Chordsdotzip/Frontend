@@ -9,6 +9,14 @@ import AddFile from '../assets/Pics/addfile.png';
 import result from '../store/result';
 import { Toast } from '../Toast';
 import { api } from '../axiosInstance';
+import { service } from '../services/services';
+
+interface response {
+  data: {
+    status_code: string;
+    detail: { chords: string[][]; url: string };
+  };
+}
 
 const Header: React.FC = () => {
   const inputFile = useRef<HTMLInputElement | null>(null);
@@ -37,11 +45,14 @@ const Header: React.FC = () => {
       try {
         const data = new FormData();
         data.append('file', acceptedFiles[0]);
-        const res = await api.post('/files', data);
+        const url = await service.upload(data);
+        data.append('url', url);
+        const res: response = await api.post('/files', data);
         dispatch(
           result.actions.saveResult({
             filename: acceptedFiles[0].name,
-            chords: res.data.chords,
+            chords: res.data.detail.chords,
+            url: url,
           })
         );
         navigate('/result');
@@ -49,27 +60,13 @@ const Header: React.FC = () => {
         await Toast.fire({
           icon: 'error',
           title: 'Error',
-          titleText: err.message,
+          titleText: err.response.data.detail,
         });
+        dispatch(loading.actions.endLoading());
       }
     }
   }
 
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files) {
-  //     dispatch(loading.actions.startLoading());
-  //     console.log(e.target.files);
-  //     setTimeout(() => {
-  //       dispatch(
-  //         result.actions.saveResult({
-  //           filename: 'test result',
-  //           chords: [['a'], ['b']],
-  //         })
-  //       );
-  //       navigate('/result');
-  //     }, 2000);
-  //   }
-  // };
   return (
     <section id="header">
       <div className="flex justify-between items-center mt-32 flex-col gap-14 xl:flex-row">

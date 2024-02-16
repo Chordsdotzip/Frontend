@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store/store';
 import loading from '../store/loading';
@@ -17,6 +17,8 @@ const MAX = 120;
 
 const Result = () => {
   const [bpm, setBpm] = useState([60]);
+  const audioRef: RefObject<HTMLAudioElement> = useRef(null);
+  const [currentTime, setCurrentTime] = useState<number>(0);
   const dispatch: AppDispatch = useDispatch();
   const result: resultInfo = useSelector((state: AppState) => state.result);
   const [start, setStart] = useState(0);
@@ -26,6 +28,10 @@ const Result = () => {
     dispatch(loading.actions.endLoading());
   }, []);
 
+  const handleTimeUpdate = () => {
+    if (audioRef.current) setCurrentTime(audioRef.current.currentTime);
+  };
+
   return (
     <div className="min-h-screen p-12 w-full">
       <div className="pt-4 flex gap-2 w-full">
@@ -34,6 +40,11 @@ const Result = () => {
             <div className="mt-20 text-2xl truncate font-bold bg-green-300 p-2 rounded w-fit max-w-full">
               {result?.filename}
             </div>
+            <audio controls ref={audioRef} onTimeUpdate={handleTimeUpdate}>
+              <source src={result.url} type="audio/mp3" />
+              Your browser does not support the audio element.
+            </audio>
+            <p>Current Time: {currentTime.toFixed(2)} seconds</p>
             <div className="md:flex gap-2 items-center">
               <p className="font-semibold">Beat per minute (BPM) :</p>{' '}
               <p className="text-xl">{bpm} BPM</p>
@@ -130,20 +141,26 @@ const Result = () => {
               let count = 0;
               let newChords = [...chords];
               newChords = newChords.slice(start * 2, end * 2);
-              const chordsElement = newChords?.map((chord: string) => {
-                const uuid2: string = uuidv4();
+              const data: string[][] = [];
+              let room: string[] = [];
+              for (let i = 0; i < newChords.length; i++) {
                 count += 1;
-                if (count % perRoom) {
-                  return (
-                    <div key={uuid2}>
-                      <div>{chord}</div>
-                    </div>
-                  );
+                room.push(newChords[i]);
+                if (count % perRoom == 0) {
+                  data.push(room);
+                  room = [];
                 }
+              }
+              if (room.length) data.push(room);
+              const chordsElement = data?.map((room: string[]) => {
+                const uuid2: string = uuidv4();
                 return (
-                  <div key={uuid2} className="flex gap-2">
-                    <div>{chord}</div>
+                  <div key={uuid2} className="flex gap-2 flex-wrap">
                     <p>/</p>
+                    {room.map((chord: string) => {
+                      const uuid3: string = uuidv4();
+                      return <p key={uuid3}>{chord}</p>;
+                    })}
                   </div>
                 );
               });
@@ -153,7 +170,6 @@ const Result = () => {
                   key={uuid}
                   className="flex flex-wrap gap-2 max-w-full border border-solid p-4 rounded shadow-2xl w-fit"
                 >
-                  <p>/</p>
                   {chordsElement}
                 </div>
               );
