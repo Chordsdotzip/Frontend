@@ -10,26 +10,94 @@ import { Link } from 'react-router-dom';
 import { handleClickScroll } from '../helper';
 import Trumpet from '../assets/Pics/trumpet.png';
 import { Range, getTrackBackground } from 'react-range';
+import notificationSound from '../assets/mp3/notification.mp3';
 
 const STEP = 10;
-const MIN = 0;
-const MAX = 120;
+const MIN = 10;
+const MAX = 140;
 
 const Result = () => {
   const [bpm, setBpm] = useState([60]);
   const audioRef: RefObject<HTMLAudioElement> = useRef(null);
-  const [currentTime, setCurrentTime] = useState<number>(0);
+  const notiRef: RefObject<HTMLAudioElement> = useRef(null);
+  const [room, setRoom] = useState<number[]>([]);
   const dispatch: AppDispatch = useDispatch();
   const result: resultInfo = useSelector((state: AppState) => state.result);
-  const [start, setStart] = useState(0);
-  const [end, setEnd] = useState(result.chords[0].length / 2);
+  const [start, setStart] = useState<number>(0);
+  const [end, setEnd] = useState<number>(result.chords[0].length / 2);
+  const [count, setCount] = useState<number>(1);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [toggleForwardOrBackward, setToggleForwardOrBackward] =
+    useState<boolean>(false);
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(loading.actions.endLoading());
+    if (audioRef.current) audioRef.current.volume = 0.4;
   }, []);
 
-  const handleTimeUpdate = () => {
-    if (audioRef.current) setCurrentTime(audioRef.current.currentTime);
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setIsPlaying(false);
+    }
+  }, [start, end, bpm, result.chords]);
+
+  useEffect(() => {
+    if (start < 0) {
+      setStart(0);
+    } else if (start > result.chords[0].length / 2) {
+      setStart(result.chords[0].length / 2);
+    }
+    if (end <= 0) {
+      setEnd(result.chords[0].length / 2);
+    } else if (end > result.chords[0].length / 2) {
+      setEnd(result.chords[0].length / 2);
+    }
+    const perRoom = Math.floor(120 / (bpm[0] / 4));
+    setRoom(() => {
+      let newRoom: number[] = [];
+      for (let i = start; i < end; i += perRoom * 0.5) {
+        newRoom = [...newRoom, i * 1000 + 1];
+      }
+      return newRoom;
+    });
+  }, [start, end, bpm, result.chords, toggleForwardOrBackward]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setIsPlaying((prevIsPlaying) => {
+        if (prevIsPlaying) {
+          setCount((prevCount) => prevCount + 50);
+        }
+        return prevIsPlaying;
+      });
+    }, 50);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    if (room.length == 1 && room[0] < count && isPlaying) {
+      playNotification();
+      setRoom((prevRoom) => [...prevRoom.slice(1)]);
+    } else if (count >= room[0] && count < room[1] && isPlaying) {
+      playNotification();
+      setRoom((prevRoom) => [...prevRoom.slice(1)]);
+    } else if (count >= room[0] && count >= room[1] && isPlaying) {
+      setRoom(room.filter((t) => t >= count));
+    }
+  }, [count, room, isPlaying]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      setCount(Math.floor(audioRef.current.currentTime * 1000) + 1);
+      setToggleForwardOrBackward(!toggleForwardOrBackward);
+    }
+  }, [isPlaying]);
+
+  const playNotification = () => {
+    notiRef.current?.play();
   };
 
   return (
@@ -40,11 +108,24 @@ const Result = () => {
             <div className="mt-20 text-2xl truncate font-bold bg-green-300 p-2 rounded w-fit max-w-full">
               {result?.filename}
             </div>
-            <audio controls ref={audioRef} onTimeUpdate={handleTimeUpdate}>
+            <audio
+              controls
+              ref={audioRef}
+              onPlaying={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
+            >
               <source src={result.url} type="audio/mp3" />
               Your browser does not support the audio element.
             </audio>
-            <p>Current Time: {currentTime.toFixed(2)} seconds</p>
+            <audio controls ref={notiRef} className="hidden">
+              <source src={notificationSound} type="audio/mp3" />
+              Your browser does not support the audio element.
+            </audio>
+
+            {/* <p>
+              {count} : {isPlaying.toString()}
+            </p> */}
+
             <div className="md:flex gap-2 items-center">
               <p className="font-semibold">Beat per minute (BPM) :</p>{' '}
               <p className="text-xl">{bpm} BPM</p>
