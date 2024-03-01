@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import Result from './pages/Result';
 import { Provider } from 'react-redux';
 import store from './store/store';
+
 function App() {
   return (
     <Provider store={store}>
