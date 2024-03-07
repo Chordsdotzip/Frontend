@@ -74,6 +74,7 @@ const Contact: React.FC = () => {
                 type="text"
                 onChange={(e) => setName(e.target.value)}
                 className="outline-0 text-gray-700 py-2 px-4 rounded bg-green-100 font-semibold focus:outline-green-300 focus:outline-2"
+                data-cy="contact-name"
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -84,6 +85,7 @@ const Contact: React.FC = () => {
                 type="email"
                 onChange={(e) => setEmail(e.target.value)}
                 className="outline-0 text-gray-700 py-2 px-4 rounded bg-green-100 font-semibold focus:outline-green-300 focus:outline-2"
+                data-cy="contact-email"
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -96,11 +98,13 @@ const Contact: React.FC = () => {
                 id=""
                 onChange={(e) => setMessage(e.target.value)}
                 className="outline-0 text-gray-700 py-2 px-4 rounded h-40 resize-none bg-green-100 font-semibold focus:outline-green-300 focus:outline-2"
+                data-cy="contact-message"
               ></textarea>
             </div>
             <button
               type="submit"
               className="bg-green-300 px-4 py-2 rounded text-gray-700 text-[14px] md:text-[20px] font-semibold hover:text-white hover:bg-green-400"
+              data-cy="contact-submit"
             >
               Send it!
             </button>

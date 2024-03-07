@@ -8,7 +8,10 @@ import { handleClickScroll } from '../helper';
 
 const Footer: React.FC = () => {
   return (
-    <section className="h-[250px] bg-gray-700 flex flex-col justify-center items-center text-white gap-4 relative">
+    <section
+      className="h-[250px] bg-gray-700 flex flex-col justify-center items-center text-white gap-4 relative"
+      data-cy="footer"
+    >
       <div className="flex gap-6">
         <FaInstagram
           className="text-white hover:text-green-400 hover:cursor-pointer"
@@ -28,19 +31,23 @@ const Footer: React.FC = () => {
           <p
             className="hover:text-green-400 hover:cursor-pointer"
             onClick={() => handleClickScroll('header')}
+            data-cy="footer-home"
           >
             HOME
           </p>
         </Link>
         <p className="hidden md:block">|</p>
         <p className="hover:text-green-400 hover:cursor-pointer">
-          <Link to="/result">EXTRACT CHORDS</Link>
+          <Link to="/result" data-cy="footer-result">
+            EXTRACT CHORDS
+          </Link>
         </p>
         <p className="hidden md:block">|</p>
         <Link to="/">
           <p
             className="hover:text-green-400 hover:cursor-pointer"
             onClick={() => handleClickScroll('tutorial')}
+            data-cy="footer-tutorial"
           >
             HOW TO USE
           </p>
@@ -51,6 +58,7 @@ const Footer: React.FC = () => {
           <p
             className="hover:text-green-400 hover:cursor-pointer"
             onClick={() => handleClickScroll('contact-us')}
+            data-cy="footer-contact"
           >
             CONTACT US
           </p>
@@ -59,7 +67,6 @@ const Footer: React.FC = () => {
       <div className="md:mt-10 text-[12px] md:text-[16px] font-bold">
         <p>ChordsDotZip Official @ 2024</p>
       </div>
-      {/* <img src={Trumpet} alt="" className="h-32 absolute right-0 bottom-0" /> */}
     </section>
   );
 };

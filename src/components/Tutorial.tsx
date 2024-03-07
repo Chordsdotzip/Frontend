@@ -5,7 +5,7 @@ import BassGuitar from '../assets/Pics/bassguitar.png';
 
 const Tutorial: React.FC = () => {
   return (
-    <section id="tutorial">
+    <section id="tutorial" data-cy='tutorial'>
       <header className="text-[28px] md:text-[48px] font-bold mt-32">
         GET STARTED
       </header>

@@ -68,7 +68,7 @@ const Header: React.FC = () => {
   }
 
   return (
-    <section id="header">
+    <section id="header" data-cy="header">
       <div className="flex justify-between items-center mt-32 flex-col gap-14 xl:flex-row">
         <div className="w-full md:w-2/3 xl:w-1/2 flex justify-center items-center flex-col">
           <img src={Guitar} className="h-96 object-scale-down" />
@@ -88,6 +88,7 @@ const Header: React.FC = () => {
             {...getRootProps()}
           >
             <input
+              data-cy="input-file"
               type="file"
               id="file"
               ref={inputFile}

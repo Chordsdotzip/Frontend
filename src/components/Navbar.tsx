@@ -18,14 +18,13 @@ const Navbar: React.FC = () => {
   return (
     <div className="bg-white p-1 fixed w-screen shadow-md z-10">
       <div className="flex items-center justify-between md:justify-normal">
-        <Link to="/" className="p-4">
+        <Link to="/" className="p-4" data-cy="nav-logo">
           <img
             src={ChordsDotZipLogo}
             className="h-16 hover:cursor-pointer object-scale-down"
           />
         </Link>
         <div className="md:hidden">
-          {/* Hamburger Icon */}
           <button
             className="hover:text-green-600 focus:outline-none p-4 text-xl"
             onClick={toggleMenu}
@@ -38,6 +37,7 @@ const Navbar: React.FC = () => {
             to="/result"
             className="hover:text-green-400"
             onClick={closeMenu}
+            data-cy="nav-result"
           >
             EXTRACT CHORDS
           </Link>
@@ -48,6 +48,7 @@ const Navbar: React.FC = () => {
               handleClickScroll('tutorial');
               closeMenu();
             }}
+            data-cy="nav-tutorial"
           >
             HOW TO USE
           </Link>
@@ -58,17 +59,19 @@ const Navbar: React.FC = () => {
               handleClickScroll('contact-us');
               closeMenu();
             }}
+            data-cy="nav-contact"
           >
             CONTACT US
           </Link>
         </div>
       </div>
       {isOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200 ">
+        <div className="md:hidden bg-white border-t border-gray-200">
           <Link
             to="/result"
             className="block p-4 hover:bg-gray-100"
             onClick={closeMenu}
+            data-cy="nav-result"
           >
             EXTRACT CHORDS
           </Link>

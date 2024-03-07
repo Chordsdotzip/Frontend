@@ -195,6 +195,7 @@ const Result = () => {
               <div className="grid grid-cols-3 justify-center items-center">
                 <p className="font-semibold">START AT:</p>
                 <input
+                  data-cy="input-start"
                   type="number"
                   onChange={(e) => setStart(Number(e.target.value))}
                   placeholder={'0'}
@@ -207,6 +208,7 @@ const Result = () => {
               <div className="grid grid-cols-3 justify-center items-center">
                 <p className="font-semibold">END AT:</p>
                 <input
+                  data-cy="input-end"
                   type="number"
                   onChange={(e) => setEnd(Number(e.target.value))}
                   placeholder={String(result.chords[0].length / 2)}
