@@ -7,93 +7,119 @@ describe('TESTS', () => {
     cy.visit('/');
   });
   describe('UI TESTS', () => {
-    describe.skip('VISIT PAGE TEST', () => {
-      it('[SUCCESS]should visit main page', () => {
-        cy.contains('Extract Chords From Song');
-      });
-      it('[SUCCESS]should visit result page with out result', () => {
-        cy.visit('/result');
-        cy.contains('NO RESULT TO SHOW!');
-      });
-      describe.skip('NAVIGATION BAR', () => {
-        it('[SUCCESS]click Logo on Navbar', () => {
-          cy.get('[data-cy="nav-logo"]').click();
-          cy.wait(800);
-          cy.window().then(($window) => {
-            expect($window.scrollY).to.be.closeTo(0, 100);
-          });
+    describe('VISIT PAGE TEST', () => {
+      describe('[SUCCESS]should visit main page', () => {
+        it('should show "Extract Chords From Song"', () => {
+          cy.contains('Extract Chords From Song');
         });
-        it('[SUCCESS]click Extract on Navbar', () => {
-          cy.get('[data-cy="nav-result"]').click();
+      });
+      describe('[SUCCESS]should visit result page with out result', () => {
+        it('should show the "NO RESULT TO SHOW!".', () => {
+          cy.visit('/result');
           cy.contains('NO RESULT TO SHOW!');
         });
-        it('[SUCCESS]click How to use on Navbar', () => {
-          cy.get('[data-cy="nav-tutorial"]').click();
-          cy.wait(800);
-          cy.window().then(($window) => {
-            expect($window.scrollY).to.be.closeTo(1100, 100);
+      });
+      describe('NAVIGATION BAR', () => {
+        describe('[SUCCESS]click Logo on Navbar', () => {
+          it('should show the Homepage.', () => {
+            cy.get('[data-cy="nav-logo"]').click();
+            cy.wait(800);
+            cy.window().then(($window) => {
+              expect($window.scrollY).to.be.closeTo(0, 100);
+            });
           });
         });
-        it('[SUCCESS]click Contact us on Navbar', () => {
-          cy.get('[data-cy="nav-contact"]').click();
-          cy.wait(800);
-          cy.window().then(($window) => {
-            expect($window.scrollY).to.be.closeTo(2500, 100);
+        describe('[SUCCESS]click Extract on Navbar', () => {
+          it('should show the "NO RESULT TO SHOW!".', () => {
+            cy.get('[data-cy="nav-result"]').click();
+            cy.contains('NO RESULT TO SHOW!');
+          });
+        });
+        describe('[SUCCESS]click How to use on Navbar', () => {
+          it('should show the how to use container.', () => {
+            cy.get('[data-cy="nav-tutorial"]').click();
+            cy.wait(800);
+            cy.window().then(($window) => {
+              expect($window.scrollY).to.be.closeTo(1100, 100);
+            });
+          });
+        });
+        describe('[SUCCESS]click Contact us on Navbar', () => {
+          it('should show the contact us container.', () => {
+            cy.get('[data-cy="nav-contact"]').click();
+            cy.wait(800);
+            cy.window().then(($window) => {
+              expect($window.scrollY).to.be.closeTo(2500, 100);
+            });
           });
         });
       });
-      describe.skip('FOOTER BAR', () => {
+      describe('FOOTER BAR', () => {
         beforeEach(() => {
           cy.scrollTo(0, 2500);
         });
-        it('[SUCCESS]click Home on Footer', () => {
-          cy.get('[data-cy="footer-home"]').click();
-          cy.wait(800);
-          cy.window().then(($window) => {
-            expect($window.scrollY).to.be.closeTo(0, 100);
+        describe('[SUCCESS]click Home on Footer', () => {
+          it('should show the Homepage.', () => {
+            cy.get('[data-cy="footer-home"]').click();
+            cy.wait(800);
+            cy.window().then(($window) => {
+              expect($window.scrollY).to.be.closeTo(0, 100);
+            });
           });
         });
-        it('[SUCCESS]click Extract on Footer', () => {
-          cy.get('[data-cy="footer-result"]').click();
-          cy.contains('NO RESULT TO SHOW!');
-        });
-        it('[SUCCESS]click How to use on Footer', () => {
-          cy.get('[data-cy="footer-tutorial"]').click();
-          cy.wait(800);
-          cy.window().then(($window) => {
-            expect($window.scrollY).to.be.closeTo(1100, 100);
+        describe('[SUCCESS]click Extract on Footer', () => {
+          it('should show the "NO RESULT TO SHOW!".', () => {
+            cy.get('[data-cy="footer-result"]').click();
+            cy.contains('NO RESULT TO SHOW!');
           });
         });
-        it('[SUCCESS]click Contact us on Footer', () => {
-          cy.get('[data-cy="footer-contact"]').click();
-          cy.wait(800);
-          cy.window().then(($window) => {
-            expect($window.scrollY).to.be.closeTo(2500, 100);
+        describe('[SUCCESS]click How to use on Footer', () => {
+          it('should show the how to use container.', () => {
+            cy.get('[data-cy="footer-tutorial"]').click();
+            cy.wait(800);
+            cy.window().then(($window) => {
+              expect($window.scrollY).to.be.closeTo(1100, 100);
+            });
+          });
+        });
+        describe('[SUCCESS]click Contact us on Footer', () => {
+          it('should show the contact us container.', () => {
+            cy.get('[data-cy="footer-contact"]').click();
+            cy.wait(800);
+            cy.window().then(($window) => {
+              expect($window.scrollY).to.be.closeTo(2500, 100);
+            });
           });
         });
       });
     });
 
-    describe.skip('CONTACT TEST', () => {
-      it.skip('[SUCCESS]send contact', () => {
-        cy.get('[data-cy="contact-name"]').type('test user');
-        cy.get('[data-cy="contact-email"]').type('test@email.com');
-        cy.get('[data-cy="contact-message"]').type('test message');
-        cy.get('[data-cy="contact-submit"]').click();
-        cy.contains('Success');
+    describe('CONTACT TEST', () => {
+      describe('[SUCCESS]send contact', () => {
+        it('should show the success badge.', () => {
+          cy.get('[data-cy="contact-name"]').type('test user');
+          cy.get('[data-cy="contact-email"]').type('test@email.com');
+          cy.get('[data-cy="contact-message"]').type('test message');
+          cy.get('[data-cy="contact-submit"]').click();
+          cy.contains('Success');
+        });
       });
-      it('[ERROR]send contact with wrong email', () => {
-        cy.get('[data-cy="contact-name"]').type('test user');
-        cy.get('[data-cy="contact-email"]').type('test');
-        cy.get('[data-cy="contact-message"]').type('test message');
-        cy.get('[data-cy="contact-submit"]').click();
-        cy.contains('Success').should('not.exist').wait(2000);
+      describe('[ERROR]send contact with wrong email', () => {
+        it('should show the wrong email error.', () => {
+          cy.get('[data-cy="contact-name"]').type('test user');
+          cy.get('[data-cy="contact-email"]').type('test');
+          cy.get('[data-cy="contact-message"]').type('test message');
+          cy.get('[data-cy="contact-submit"]').click();
+          cy.contains('Success').should('not.exist').wait(2000);
+        });
       });
-      it('[ERROR]send contact with no complete infomation', () => {
-        cy.get('[data-cy="contact-name"]').type('test user');
-        cy.get('[data-cy="contact-email"]').type('test@email.com');
-        cy.get('[data-cy="contact-submit"]').click();
-        cy.contains('Please fill the information');
+      describe('[ERROR]send contact with no complete infomation', () => {
+        it('should show the no complete infomation error.', () => {
+          cy.get('[data-cy="contact-name"]').type('test user');
+          cy.get('[data-cy="contact-email"]').type('test@email.com');
+          cy.get('[data-cy="contact-submit"]').click();
+          cy.contains('Please fill the information');
+        });
       });
     });
   });
