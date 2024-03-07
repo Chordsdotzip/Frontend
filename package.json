@@ -55,11 +55,8 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^29.7.0",
     "camelcase": "^6.3.0",
-<<<<<<< HEAD
     "cypress": "^13.6.6",
     "cypress-file-upload": "^5.0.8",
-=======
->>>>>>> parent of 35728b2... create unit test
     "eslint": "^8.55.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
