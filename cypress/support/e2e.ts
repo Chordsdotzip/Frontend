@@ -142,10 +142,10 @@ describe('TESTS', () => {
     describe('[POST] TEST EXTRACT CHORDS ENDPOINT', () => {
       it('should show the result chords.', () => {
         cy.get('[data-cy="input-file"]').attachFile({
-          filePath: './notification.mp3',
+          filePath: './test.mp3',
           mimeType: 'audio/mpeg',
         });
-        cy.contains('notification.mp3');
+        cy.contains('test.mp3');
         cy.get('[data-cy="input-end"]').type('0.5');
         cy.contains('Am').should('not.exist');
       });
@@ -153,9 +153,18 @@ describe('TESTS', () => {
     describe('[POST] TEST INVALID FILE TYPE', () => {
       it('should show the file type error.', () => {
         cy.get('[data-cy="input-file"]').attachFile({
-          filePath: './notification.txt',
+          filePath: './test.txt',
         });
         cy.contains('File type must be audio/*,.wav,.mp3,.mp4');
+      });
+    });
+    describe('[POST] TEST MAXIMUM FILE SIZE 20 MB', () => {
+      it('should show the maximum file size error.', () => {
+        cy.readFile('./cypress/fixtures/21MB.mp3', null, {
+          timeout: 6000,
+        }).as('file');
+        cy.get('[data-cy="input-file"]').selectFile('@file', { force: true });
+        cy.contains('File is larger than 20000000 bytes');
       });
     });
   });

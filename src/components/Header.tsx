@@ -26,6 +26,7 @@ const Header: React.FC = () => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDropAccepted,
     maxFiles: 1,
+    maxSize: 20000000,
     accept: {
       'audio/*': ['.wav', '.mp3', '.mp4'],
     },
