@@ -9,7 +9,6 @@ export const api = axios.create({
     'Access-Control-Allow-Origin': 'true',
     'Content-Type': 'multipart/form-data',
     'ngrok-skip-browser-warning': '69420',
-    // 'x-api-key': API_KEY,
     Authorization: 'Bearer ' + API_KEY,
     withCredentials: true,
   },

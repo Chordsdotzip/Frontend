@@ -1,7 +1,7 @@
 import 'cypress-file-upload';
 
 const api_url =
-  'https://ae0e-2405-9800-b660-6b84-48c4-d851-4a21-9f0d.ngrok-free.app';
+  'https://0007-2405-9800-b660-6b84-19f7-f32c-cf62-c38e.ngrok-free.app';
 describe('TESTS', () => {
   beforeEach(() => {
     cy.visit('/');
